@@ -35,10 +35,10 @@ public class GamesServiceImpl implements GamesService {
 	@Override
 	public ResponseEntity<ResponseBody<ResponseNewGame>> startNewGame(NewGameRequest newGameRequest, HttpServletRequest request) {
 		ResponseBody<ResponseNewGame> response;
-		GameSession currentGame = (GameSession) request.getSession().getAttribute(AttributesNamesEnum.GAME_SESSION.getValue());		
+		GameSession currentGame = (GameSession) request.getSession().getAttribute(AttributesNamesEnum.GAME_SESSION.getValue());	
 		response = this.checkIfUserIsLoggedIn(currentGame);
 		response = this.checkIfUserAlreadyStatedAGame(currentGame);
-		response = this.checkIfGameCanBeStarted(newGameRequest, request, response);		
+		response = this.checkIfGameCanBeStarted(newGameRequest, request, response);
 		return new ResponseEntity<ResponseBody<ResponseNewGame>>(response, HttpStatus.resolve(response.getStatusCode()));
 	}
 	
@@ -80,9 +80,7 @@ public class GamesServiceImpl implements GamesService {
 			response.setStatusCode(HttpStatus.OK.value());
 			response.setMessage("Jogo Finalizado com sucesso.");
 			GameSession currentGame = (GameSession) request.getSession().getAttribute(AttributesNamesEnum.GAME_SESSION.getValue());
-			GameService gameService = gameServiceFactory.getService(currentGame.getGameType());
-		
-			
+			GameService gameService = gameServiceFactory.getService(currentGame.getGameType());			
 			
 			ResponseGameResult gameResult = gameService.getGameResult(currentGame);
 			

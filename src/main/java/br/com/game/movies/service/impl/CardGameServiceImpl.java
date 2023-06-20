@@ -42,7 +42,7 @@ public class CardGameServiceImpl implements GameService  {
 	@Override
 	public CardGame startNewGame() {
 		CardGame newCardGame = new CardGame();
-		newCardGame.setMessage(MessagesConstants.START_NEW_CARD_GAME);
+		newCardGame.setMessage(MessagesConstants.START_NEW_DIRECTORS_GAME);
 		newCardGame.setNextUrl(UrlConstants.NEXT_ROUND);
 		newCardGame.setMaxNumberOfRounds(GamesConstants.NUMBER_MAX_ROUNDS_CARD_GAME);		
 		return newCardGame;
@@ -54,9 +54,9 @@ public class CardGameServiceImpl implements GameService  {
 		
 		List<Integer> usedIds = this.getUsedIds(gameSession.getSessionId());
 		
-		List<MovieRecord> movies = this.movieDao.getRandomMoviesByLimit(usedIds, GamesConstants.NUMBER_OF_MOVIES);
+		List<MovieRecord> movies = this.movieDao.getRandomMoviesByLimit(usedIds, GamesConstants.NUMBER_OF_MOVIES_FOR_CARD_GAME);
 		
-		this.addUsedIdsToList(movies, usedIds, GamesConstants.NUMBER_OF_MOVIES);
+		this.addUsedIdsToList(movies, usedIds, GamesConstants.NUMBER_OF_MOVIES_FOR_CARD_GAME);
 		
 		mapSession.put(gameSession.getSessionId(), usedIds);
 		

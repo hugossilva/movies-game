@@ -7,7 +7,7 @@ public final class MessagesConstants {
 	
 	public static final String USER_NOT_LOGED_IN = "Você não possui uma sessão iniciada, logue primeiro para jogar.";
 	
-	public static final String START_NEW_CARD_GAME = "Você iniciou um novo jogo de card game. Diverta-se.";
+	public static final String START_NEW_CARD_GAME = "Você iniciou um novo jogo de card game. Diverta-se.";	
 	public static final String START_NEW_DIRECTORS_GAME = "Você iniciou um novo jogo de diretores. Diverta-se.";
 	public static final String NONE_GAME = "Você não selecionou nenhum jogo para iniciar.";
 	
