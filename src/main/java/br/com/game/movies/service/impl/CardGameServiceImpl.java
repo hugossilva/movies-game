@@ -2,10 +2,8 @@ package br.com.game.movies.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import br.com.game.movies.comparators.MoviesComparator;
@@ -13,11 +11,12 @@ import br.com.game.movies.constants.GamesConstants;
 import br.com.game.movies.constants.MessagesConstants;
 import br.com.game.movies.constants.UrlConstants;
 import br.com.game.movies.dao.interfaces.MovieDAO;
-import br.com.game.movies.entity.GameSession;
 import br.com.game.movies.entity.response.CardGame;
 import br.com.game.movies.entity.response.CardGameResult;
 import br.com.game.movies.entity.response.RoundCardGame;
 import br.com.game.movies.entity.response.RoundResultCardGame;
+import br.com.game.movies.entity.session.CardGameSession;
+import br.com.game.movies.entity.session.GameSession;
 import br.com.game.movies.enums.GameTypeEnum;
 import br.com.game.movies.records.MovieRecord;
 import br.com.game.movies.service.interfaces.GameService;
@@ -28,15 +27,24 @@ import br.com.game.movies.utils.ServicesUtils;
 public class CardGameServiceImpl implements GameService  {
 	
 	@Autowired
-	@Qualifier("CardGameSession")
-	private Map<String, List<Integer>> mapSession;
-	
-	@Autowired
 	private MovieDAO movieDao;
 	
 	@Override
 	public GameTypeEnum getGameType() {
 		return GameTypeEnum.CARD_GAME;
+	}
+	
+	@Override
+	public GameSession getGameSession(String sessionId) {
+		CardGameSession session = new CardGameSession();
+		session.setCorrectAnswers(0);
+		session.setGameType(GameTypeEnum.CARD_GAME);
+		session.setMaxRounds(GamesConstants.NUMBER_MAX_ROUNDS_CARD_GAME);
+		session.setNextRound(true);
+		session.setRoundNumber(0);
+		session.setSessionId(sessionId);
+		session.setMoviesId(new ArrayList<Integer>());
+		return session;
 	}
 	
 	@Override
@@ -50,15 +58,13 @@ public class CardGameServiceImpl implements GameService  {
 	
 	@Override
 	public RoundCardGame getNextRound(GameSession gameSession) {
-		RoundCardGame response = new RoundCardGame(GameTypeEnum.CARD_GAME, gameSession.getRoundNumber(), GamesConstants.NUMBER_MAX_ROUNDS_CARD_GAME);
+		CardGameSession cardGameSession = (CardGameSession) gameSession;
 		
-		List<Integer> usedIds = this.getUsedIds(gameSession.getSessionId());
+		RoundCardGame response = new RoundCardGame(GameTypeEnum.CARD_GAME, cardGameSession.getRoundNumber(), GamesConstants.NUMBER_MAX_ROUNDS_CARD_GAME);		
 		
-		List<MovieRecord> movies = this.movieDao.getRandomMoviesByLimit(usedIds, GamesConstants.NUMBER_OF_MOVIES_FOR_CARD_GAME);
+		List<MovieRecord> movies = this.movieDao.getRandomMoviesByLimit(cardGameSession.getMoviesId(), GamesConstants.NUMBER_OF_MOVIES_FOR_CARD_GAME);
 		
-		this.addUsedIdsToList(movies, usedIds, GamesConstants.NUMBER_OF_MOVIES_FOR_CARD_GAME);
-		
-		mapSession.put(gameSession.getSessionId(), usedIds);
+		this.addUsedIdsToList(movies, cardGameSession, GamesConstants.NUMBER_OF_MOVIES_FOR_CARD_GAME);				
 		
 		this.addCardsToResponse(movies, response);
 		
@@ -70,16 +76,16 @@ public class CardGameServiceImpl implements GameService  {
 	}
 	
 	@Override
-	public RoundResultCardGame getRoundResult(GameSession gameSession,  int idUserAnswer) {
+	public RoundResultCardGame getRoundResult(GameSession gameInfo,  int idUserAnswer) {
 		RoundResultCardGame roundResult = new RoundResultCardGame();
 		
-		roundResult.setIdCorrectAnswer(gameSession.getIdRoundCorrectAnswer());
-		roundResult.setCorrectMovieId(gameSession.getIdRoundCorrectAnswer());
-		roundResult.setMessage(MessagesConstants.INCORRECT_ANSWER_CARD_GAME);
+		roundResult.setIdCorrectAnswer(gameInfo.getIdRoundCorrectAnswer());
+		roundResult.setCorrectMovieId(gameInfo.getIdRoundCorrectAnswer());
+		roundResult.setMessage(MessagesConstants.INCORRECT_ANSWER);
 		roundResult.setCorrectAnswer(false);
 		
-		if(gameSession.getIdRoundCorrectAnswer() == idUserAnswer) {
-			roundResult.setMessage(MessagesConstants.CORRECT_ANSWER_CARD_GAME);
+		if(gameInfo.getIdRoundCorrectAnswer() == idUserAnswer) {
+			roundResult.setMessage(MessagesConstants.CORRECT_ANSWER);
 			roundResult.setCorrectAnswer(true);
 		}		
 		
@@ -87,14 +93,14 @@ public class CardGameServiceImpl implements GameService  {
 	}
 	
 	@Override
-	public CardGameResult getGameResult(GameSession gameSession) {
+	public CardGameResult getGameResult(GameSession gameInfo) {
 		CardGameResult gameResult = new CardGameResult();
 		
 		gameResult.setGameType(GameTypeEnum.CARD_GAME);
-		gameResult.setNumberOfCorrectAnswers(gameSession.getCorrectAnswers());
-		gameResult.setNumberOfRoundsPlayed(gameSession.getRoundNumber());
-		gameResult.setNumberOfTotalRounds(gameSession.getMaxRounds());
-		gameResult.setTotalPointsScored(gameResult.getRelevanceMultiplier() * gameSession.getCorrectAnswers());		
+		gameResult.setNumberOfCorrectAnswers(gameInfo.getCorrectAnswers());
+		gameResult.setNumberOfRoundsPlayed(gameInfo.getRoundNumber());
+		gameResult.setNumberOfTotalRounds(gameInfo.getMaxRounds());
+		gameResult.setTotalPointsScored(gameResult.getRelevanceMultiplier() * gameInfo.getCorrectAnswers());		
 		
 		return gameResult;
 	}
@@ -102,16 +108,6 @@ public class CardGameServiceImpl implements GameService  {
 	private MovieRecord getCorrectAnswerFromMovies(List<MovieRecord> movies) {
 		MoviesComparator movieComparator = new MoviesComparator();
 		return movies.stream().max(movieComparator).get();
-	}
-	
-	private List<Integer> getUsedIds(String sessionId) {
-		List<Integer> usedIds = mapSession.get(sessionId);
-		
-		if(usedIds == null) {
-			return new ArrayList<Integer>();
-		}
-		
-		return usedIds;
 	}
 	
 	private void addCardsToResponse(List<MovieRecord> movies, RoundCardGame response) {
@@ -122,12 +118,14 @@ public class CardGameServiceImpl implements GameService  {
 		response.setCard2(DaoUtils.fillMovieFromDTO(movie2));		
 	}
 	
-	private void addUsedIdsToList(List<MovieRecord> movies, List<Integer> usedIds, Integer idsToAdd) {		
+	private void addUsedIdsToList(List<MovieRecord> movies, CardGameSession gameSession, Integer idsToAdd) {		
 		for(int i = 0; i < idsToAdd; i++) {
 			MovieRecord movie = ServicesUtils.getValueFromListByIndex(movies, i);
-			usedIds.add(movie.movieId());
+			gameSession.getMoviesId().add(movie.movieId());
 		}		
 	}
+
+
 
 
 }

@@ -1,6 +1,6 @@
 package br.com.game.movies.abstracts;
 
-import br.com.game.movies.entity.GameSession;
+import br.com.game.movies.entity.session.GameSession;
 
 public abstract class Game {
 	

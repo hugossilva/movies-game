@@ -10,10 +10,10 @@ import br.com.game.movies.abstracts.ResponseNewGame;
 import br.com.game.movies.abstracts.ResponseRound;
 import br.com.game.movies.abstracts.ResponseRoundResult;
 import br.com.game.movies.constants.MessagesConstants;
-import br.com.game.movies.entity.GameSession;
 import br.com.game.movies.entity.request.NewGameRequest;
 import br.com.game.movies.entity.request.RoundResultRequest;
 import br.com.game.movies.entity.response.ResponseBody;
+import br.com.game.movies.entity.session.GameSession;
 import br.com.game.movies.enums.AttributesNamesEnum;
 import br.com.game.movies.enums.GameTypeEnum;
 import br.com.game.movies.factory.GameDetailsFactory;
@@ -216,7 +216,7 @@ public class GamesServiceImpl implements GamesService {
 			response = new ResponseBody<ResponseNewGame>();
 			response.setStatusCode(HttpStatus.OK.value());
 			ResponseNewGame newGame = this.startNewGameByGameType(newGameRequest);			
-			this.putNewGameInfoInCurrentGame(newGameRequest, currentGame);
+			currentGame = this.getGameSessionInfo(newGameRequest, request);
 			request.getSession().setAttribute(AttributesNamesEnum.GAME_SESSION.getValue(), currentGame);
 			this.fillNewGameInfoByGameType(newGameRequest, newGame, response);
 			return response;
@@ -230,8 +230,9 @@ public class GamesServiceImpl implements GamesService {
 		return gameService.startNewGame();
 	}
 	
-	private void putNewGameInfoInCurrentGame(NewGameRequest newGameRequest, GameSession currentGame) {
-		currentGame.setGameType(newGameRequest.getGameType());
+	private GameSession getGameSessionInfo(NewGameRequest newGameRequest, HttpServletRequest request) {
+		GameService gameService = gameServiceFactory.getService(newGameRequest.getGameType());
+		return gameService.getGameSession(request.getSession().getId());
 	}
 	
 	private void fillNewGameInfoByGameType(NewGameRequest newGameRequest, ResponseNewGame newGame, ResponseBody<ResponseNewGame> response) {

@@ -1,5 +1,6 @@
 package br.com.game.movies.entity.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.game.movies.abstracts.ResponseRound;
@@ -16,7 +17,7 @@ public class RoundDirectorGame extends ResponseRound {
 
 	public RoundDirectorGame(GameTypeEnum gameType, int round, int maxRounds) {
 		super(gameType, round, maxRounds);
-		// TODO Auto-generated constructor stub
+		this.directors = new ArrayList<Director>();
 	}
 
 	public Integer getMovieId() {

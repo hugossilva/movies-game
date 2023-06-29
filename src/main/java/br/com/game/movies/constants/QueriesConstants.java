@@ -23,6 +23,13 @@ public final class QueriesConstants {
 			+ "WHERE MOVIE_ID NOT IN (:movie_ids) "
 			+ "ORDER BY RAND() LIMIT :limit";
 	
+	public static final String QUERY_RANDOM_DIRECTORS = "SELECT "
+			+ "DIRECTOR_ID, "			
+			+ "DIRECTOR "			
+			+ "FROM DIRECTORS "
+			+ "WHERE DIRECTOR_ID NOT IN (:director_ids) "
+			+ "ORDER BY RAND() LIMIT :limit";
+	
 	public static final String QUERY_USERS = "SELECT U.USER_ID, U.USERNAME, U.PASSWORD, R.ROLE_NAME FROM USERS U "
 			+ " JOIN ROLES R "
 			+ " ON R.ROLE_ID = U.ROLE_ID "

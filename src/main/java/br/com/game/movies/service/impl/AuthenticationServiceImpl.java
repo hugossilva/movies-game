@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.game.movies.constants.MessagesConstants;
 import br.com.game.movies.dao.interfaces.UserDAO;
-import br.com.game.movies.entity.GameSession;
 import br.com.game.movies.entity.UserInfo;
+import br.com.game.movies.entity.session.GameSession;
 import br.com.game.movies.enums.AttributesNamesEnum;
 import br.com.game.movies.enums.GameTypeEnum;
 import br.com.game.movies.records.UserRecord;
@@ -82,4 +82,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		String password = userInfo.getPassword().trim();
 		return userDao.getUserInfo(username, password);		
 	}
-}
+	}

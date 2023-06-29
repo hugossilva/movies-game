@@ -1,4 +1,4 @@
-package br.com.game.movies.entity;
+package br.com.game.movies.entity.session;
 
 import br.com.game.movies.enums.GameTypeEnum;
 
@@ -31,6 +31,18 @@ public class GameSession {
 	public void setRoundNumber(int roundNumber) {
 		this.roundNumber = roundNumber;
 	}
+	public int getMaxRounds() {
+		return maxRounds;
+	}
+	public void setMaxRounds(int maxRounds) {
+		this.maxRounds = maxRounds;
+	}
+	public int getIdRoundCorrectAnswer() {
+		return idRoundCorrectAnswer;
+	}
+	public void setIdRoundCorrectAnswer(int idRoundCorrectAnswer) {
+		this.idRoundCorrectAnswer = idRoundCorrectAnswer;
+	}
 	public int getCorrectAnswers() {
 		return correctAnswers;
 	}
@@ -49,16 +61,5 @@ public class GameSession {
 	public void setReasonNextRound(String reasonNextRound) {
 		this.reasonNextRound = reasonNextRound;
 	}
-	public int getMaxRounds() {
-		return maxRounds;
-	}
-	public void setMaxRounds(int maxRounds) {
-		this.maxRounds = maxRounds;
-	}
-	public int getIdRoundCorrectAnswer() {
-		return idRoundCorrectAnswer;
-	}
-	public void setIdRoundCorrectAnswer(int idRoundCorrectAnswer) {
-		this.idRoundCorrectAnswer = idRoundCorrectAnswer;
-	}
+
 }
