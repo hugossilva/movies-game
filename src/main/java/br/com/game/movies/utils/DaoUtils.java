@@ -1,5 +1,8 @@
 package br.com.game.movies.utils;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,17 @@ public class DaoUtils {
 		movie.setGenres(fillGenresFromDTO(movieDTO.genres()));
 		
 		return movie;
+	}
+	
+	public static boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
+	    ResultSetMetaData rsmd = rs.getMetaData();
+	    int columns = rsmd.getColumnCount();
+	    for (int x = 1; x <= columns; x++) {
+	        if (columnName.equals(rsmd.getColumnName(x))) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	private static Director fillDirectorFromDTO(DirectorRecord directorDTO) {

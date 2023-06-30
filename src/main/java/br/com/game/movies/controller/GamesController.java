@@ -12,7 +12,7 @@ import br.com.game.movies.abstracts.ResponseGameResult;
 import br.com.game.movies.abstracts.ResponseNewGame;
 import br.com.game.movies.abstracts.ResponseRound;
 import br.com.game.movies.abstracts.ResponseRoundResult;
-import br.com.game.movies.entity.request.NewGameRequest;
+import br.com.game.movies.entity.request.GameRequest;
 import br.com.game.movies.entity.request.RoundResultRequest;
 import br.com.game.movies.entity.response.ResponseBody;
 import br.com.game.movies.service.interfaces.GamesService;
@@ -28,11 +28,11 @@ public class GamesController {
 	
 	
 	@PostMapping("/new-game")
-	public ResponseEntity<ResponseBody<ResponseNewGame>> Login(@RequestBody NewGameRequest newGameRequest, HttpServletRequest request) {		
+	public ResponseEntity<ResponseBody<ResponseNewGame>> Login(@RequestBody GameRequest newGameRequest, HttpServletRequest request) {		
 		return games.startNewGame(newGameRequest, request);
 	}
 	
-	@PostMapping("/round-card-game")
+	@PostMapping("/round-game")
 	public ResponseEntity<ResponseBody<ResponseRound>> getRoundForCardGame(HttpServletRequest request) {
 		return games.nextRoundGame(request);
 	}
@@ -45,7 +45,6 @@ public class GamesController {
 	@GetMapping("/game-result")
 	public ResponseEntity<ResponseBody<ResponseGameResult>> getGameResult(HttpServletRequest request) {
 		return games.getGameResult(request);
-	}
-	
+	}	
 }
 

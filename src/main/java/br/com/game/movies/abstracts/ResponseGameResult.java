@@ -10,6 +10,7 @@ public abstract class ResponseGameResult {
 	private Integer numberOfTotalRounds;	
 	private Double totalPointsScored;
 	private Integer generalRankingPosition;
+	private Integer userId;
 	
 	public GameTypeEnum getGameType() {
 		return gameType;
@@ -46,5 +47,11 @@ public abstract class ResponseGameResult {
 	}
 	public void setGeneralRankingPosition(Integer generalRankingPosition) {
 		this.generalRankingPosition = generalRankingPosition;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 }

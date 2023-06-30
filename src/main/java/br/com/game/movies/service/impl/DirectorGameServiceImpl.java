@@ -34,7 +34,7 @@ public class DirectorGameServiceImpl implements GameService {
 	private DirectorsDAO directorDao;
 	
 	@Override
-	public GameSession getGameSession(String sessionId) {
+	public GameSession getGameSession(String sessionId, Integer userId) {
 		DirectorGameSession session = new DirectorGameSession();
 		session.setCorrectAnswers(0);
 		session.setGameType(GameTypeEnum.DIRECTORS_GAME);
@@ -44,6 +44,7 @@ public class DirectorGameServiceImpl implements GameService {
 		session.setSessionId(sessionId);
 		session.setMoviesId(new ArrayList<Integer>());
 		session.setLastIdsDirectorsUsed(new ArrayList<Integer>());
+		session.setUserId(userId);
 		return session;
 	}
 	

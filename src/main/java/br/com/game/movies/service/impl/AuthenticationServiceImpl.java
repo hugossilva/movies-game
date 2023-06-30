@@ -62,6 +62,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			
 			request.getSession().setAttribute(AttributesNamesEnum.USER_ROLE.getValue(), user.role());
 			request.getSession().setAttribute(AttributesNamesEnum.LOGIN.getValue(), true);
+			request.getSession().setAttribute(AttributesNamesEnum.USER_NAME.getValue(), user.username());
+			request.getSession().setAttribute(AttributesNamesEnum.USER_ID.getValue(), user.userId());
 			request.getSession().setAttribute(AttributesNamesEnum.GAME_SESSION.getValue(), gameSession);	
 		}		
 	}

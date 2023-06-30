@@ -8,7 +8,7 @@ import br.com.game.movies.entity.session.GameSession;
 import br.com.game.movies.enums.GameTypeEnum;
 
 public interface GameService {
-	public GameSession getGameSession(String sessionId);
+	public GameSession getGameSession(String sessionId, Integer userId);
 	public GameTypeEnum getGameType();
 	public ResponseNewGame startNewGame();	
 	public ResponseRound getNextRound(GameSession gameSession);

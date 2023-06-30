@@ -10,7 +10,7 @@ import br.com.game.movies.abstracts.ResponseNewGame;
 import br.com.game.movies.abstracts.ResponseRound;
 import br.com.game.movies.abstracts.ResponseRoundResult;
 import br.com.game.movies.constants.MessagesConstants;
-import br.com.game.movies.entity.request.NewGameRequest;
+import br.com.game.movies.entity.request.GameRequest;
 import br.com.game.movies.entity.request.RoundResultRequest;
 import br.com.game.movies.entity.response.ResponseBody;
 import br.com.game.movies.entity.session.GameSession;
@@ -33,7 +33,7 @@ public class GamesServiceImpl implements GamesService {
 	
 	
 	@Override
-	public ResponseEntity<ResponseBody<ResponseNewGame>> startNewGame(NewGameRequest newGameRequest, HttpServletRequest request) {
+	public ResponseEntity<ResponseBody<ResponseNewGame>> startNewGame(GameRequest newGameRequest, HttpServletRequest request) {
 		ResponseBody<ResponseNewGame> response;
 		GameSession currentGame = (GameSession) request.getSession().getAttribute(AttributesNamesEnum.GAME_SESSION.getValue());	
 		response = this.checkIfUserIsLoggedIn(currentGame);
@@ -210,7 +210,7 @@ public class GamesServiceImpl implements GamesService {
 		return null;		
 	}
 	
-	private ResponseBody<ResponseNewGame> checkIfGameCanBeStarted(NewGameRequest newGameRequest, HttpServletRequest request, ResponseBody<ResponseNewGame> response) {
+	private ResponseBody<ResponseNewGame> checkIfGameCanBeStarted(GameRequest newGameRequest, HttpServletRequest request, ResponseBody<ResponseNewGame> response) {
 		GameSession currentGame = (GameSession) request.getSession().getAttribute(AttributesNamesEnum.GAME_SESSION.getValue());
 		if(response == null && currentGame != null && currentGame.getGameType().equals(GameTypeEnum.NONE)) {
 			response = new ResponseBody<ResponseNewGame>();
@@ -225,17 +225,18 @@ public class GamesServiceImpl implements GamesService {
 		return response;
 	}
 	
-	private ResponseNewGame startNewGameByGameType(NewGameRequest newGameRequest) {
+	private ResponseNewGame startNewGameByGameType(GameRequest newGameRequest) {
 		GameService gameService = gameServiceFactory.getService(newGameRequest.getGameType());
 		return gameService.startNewGame();
 	}
 	
-	private GameSession getGameSessionInfo(NewGameRequest newGameRequest, HttpServletRequest request) {
+	private GameSession getGameSessionInfo(GameRequest newGameRequest, HttpServletRequest request) {
 		GameService gameService = gameServiceFactory.getService(newGameRequest.getGameType());
-		return gameService.getGameSession(request.getSession().getId());
+		Integer userId = (Integer) request.getSession().getAttribute(AttributesNamesEnum.USER_ID.getValue());
+		return gameService.getGameSession(request.getSession().getId(), userId);
 	}
 	
-	private void fillNewGameInfoByGameType(NewGameRequest newGameRequest, ResponseNewGame newGame, ResponseBody<ResponseNewGame> response) {
+	private void fillNewGameInfoByGameType(GameRequest newGameRequest, ResponseNewGame newGame, ResponseBody<ResponseNewGame> response) {
 		newGame.setGameStarted(true);
 		newGame.setNextUrl(gameDetailFactory.getNextUrlByGameType(newGameRequest.getGameType()));
 		response.setMessage(gameDetailFactory.getNewGameMessageByGameType(newGameRequest.getGameType()));

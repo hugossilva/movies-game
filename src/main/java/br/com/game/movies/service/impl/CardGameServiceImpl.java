@@ -20,6 +20,7 @@ import br.com.game.movies.entity.session.GameSession;
 import br.com.game.movies.enums.GameTypeEnum;
 import br.com.game.movies.records.MovieRecord;
 import br.com.game.movies.service.interfaces.GameService;
+import br.com.game.movies.service.interfaces.RankingService;
 import br.com.game.movies.utils.DaoUtils;
 import br.com.game.movies.utils.ServicesUtils;
 
@@ -29,13 +30,16 @@ public class CardGameServiceImpl implements GameService  {
 	@Autowired
 	private MovieDAO movieDao;
 	
+	@Autowired
+	private RankingService rankingService;
+	
 	@Override
 	public GameTypeEnum getGameType() {
 		return GameTypeEnum.CARD_GAME;
 	}
 	
 	@Override
-	public GameSession getGameSession(String sessionId) {
+	public GameSession getGameSession(String sessionId, Integer userId) {
 		CardGameSession session = new CardGameSession();
 		session.setCorrectAnswers(0);
 		session.setGameType(GameTypeEnum.CARD_GAME);
@@ -44,6 +48,7 @@ public class CardGameServiceImpl implements GameService  {
 		session.setRoundNumber(0);
 		session.setSessionId(sessionId);
 		session.setMoviesId(new ArrayList<Integer>());
+		session.setUserId(userId);
 		return session;
 	}
 	
@@ -96,11 +101,14 @@ public class CardGameServiceImpl implements GameService  {
 	public CardGameResult getGameResult(GameSession gameInfo) {
 		CardGameResult gameResult = new CardGameResult();
 		
+		gameResult.setUserId(gameInfo.getUserId());
 		gameResult.setGameType(GameTypeEnum.CARD_GAME);
 		gameResult.setNumberOfCorrectAnswers(gameInfo.getCorrectAnswers());
 		gameResult.setNumberOfRoundsPlayed(gameInfo.getRoundNumber());
 		gameResult.setNumberOfTotalRounds(gameInfo.getMaxRounds());
-		gameResult.setTotalPointsScored(gameResult.getRelevanceMultiplier() * gameInfo.getCorrectAnswers());		
+		gameResult.setTotalPointsScored(gameResult.getRelevanceMultiplier() * gameInfo.getCorrectAnswers());
+		
+		this.rankingService.saveRankingByGameResult(gameResult);
 		
 		return gameResult;
 	}

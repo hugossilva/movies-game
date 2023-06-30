@@ -12,6 +12,7 @@ public class GameSession {
 	private int correctAnswers;
 	private boolean nextRound;
 	private String reasonNextRound;
+	private Integer userId;
 	
 	public String getSessionId() {
 		return sessionId;
@@ -60,6 +61,12 @@ public class GameSession {
 	}
 	public void setReasonNextRound(String reasonNextRound) {
 		this.reasonNextRound = reasonNextRound;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }

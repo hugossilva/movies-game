@@ -35,4 +35,30 @@ public final class QueriesConstants {
 			+ " ON R.ROLE_ID = U.ROLE_ID "
 			+ " WHERE U.USERNAME = :username "
 			+ " AND U.PASSWORD = :password ";
+	
+	public static final String INSERT_RANKING_POINTS = 
+			"INSERT INTO RANKING_POINTS (USER_ID, GAME_TYPE, POINTS) "
+			+ "VALUES"
+			+ " (:user_id, :game_type, :points) ";
+	
+	public static final String QUERY_GENERAL_RANKING = 
+			"SELECT RP.RANKING_POINTS_ID, RP.USER_ID, U.USERNAME, SUM(RP.POINTS) as POINTS "
+			+ "FROM RANKING_POINTS RP "
+			+ "JOIN USERS U "
+			+ "ON RP.USER_ID = U.USER_ID "
+			+ "GROUP BY RP.USER_ID "
+			+ "ORDER BY RP.USER_ID "
+			+ "ASC";
+	
+	public static final String QUERY_RANKING_BY_GAME_TYPE = 
+			"SELECT RP.USER_ID, U.USERNAME, SUM(RP.POINTS) "
+			+ "FROM RANKING_POINTS RP "
+			+ "JOIN USERS U "
+			+ "ON RP.USER_ID = U.USER_ID "
+			+ "WHERE RP.GAME_TYPE = :game_type "
+			+ "GROUP BY RP.USER_ID "
+			+ "ORDER BY RP.USER_ID "
+			+ "ASC";
+	
+	
 }

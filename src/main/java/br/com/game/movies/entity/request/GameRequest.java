@@ -2,7 +2,7 @@ package br.com.game.movies.entity.request;
 
 import br.com.game.movies.enums.GameTypeEnum;
 
-public class NewGameRequest {
+public class GameRequest {
 	
 	private GameTypeEnum gameType;
 
