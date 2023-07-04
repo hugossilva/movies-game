@@ -5,11 +5,12 @@ import java.util.List;
 import br.com.game.movies.abstracts.ResponseGameResult;
 import br.com.game.movies.entity.RankingPoint;
 import br.com.game.movies.enums.GameTypeEnum;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface RankingService {
 	
 	public void saveRankingByGameResult(ResponseGameResult gameResult);
 	public List<RankingPoint> getGenralRanking();
-	public List<RankingPoint> getRankingByGameType(GameTypeEnum gameType);
+	public List<RankingPoint> getRankingByGameType(GameTypeEnum gameType, HttpServletRequest request);
 
 }

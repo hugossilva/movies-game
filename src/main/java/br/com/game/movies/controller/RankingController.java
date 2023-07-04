@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.game.movies.entity.RankingPoint;
 import br.com.game.movies.entity.request.GameRequest;
 import br.com.game.movies.service.interfaces.RankingService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin
@@ -27,8 +28,8 @@ public class RankingController {
 	}
 	
 	@PostMapping("/ranking-by-game")
-	public List<RankingPoint> getRankingByGameType(@RequestBody GameRequest gameRequest) {
-		return this.rankingService.getRankingByGameType(gameRequest.getGameType());
+	public List<RankingPoint> getRankingByGameType(@RequestBody GameRequest gameRequest, HttpServletRequest request) {
+		return this.rankingService.getRankingByGameType(gameRequest.getGameType(), request);
 	}
 
 }
