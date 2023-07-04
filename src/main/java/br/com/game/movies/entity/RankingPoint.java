@@ -2,17 +2,17 @@ package br.com.game.movies.entity;
 
 public class RankingPoint {
 	
-	private Integer rankingPointsId;
+	private Integer position;
 	private Integer userId;
 	private String userName;
 	private String gameType;
-	private Double points;
-	
-	public Integer getRankingPointsId() {
-		return rankingPointsId;
+	private Double points;	
+
+	public Integer getPosition() {
+		return position;
 	}
-	public void setRankingPointsId(Integer rankingPointsId) {
-		this.rankingPointsId = rankingPointsId;
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 	public Integer getUserId() {
 		return userId;

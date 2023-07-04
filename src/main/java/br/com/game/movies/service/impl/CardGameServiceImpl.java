@@ -106,7 +106,7 @@ public class CardGameServiceImpl implements GameService  {
 		gameResult.setNumberOfCorrectAnswers(gameInfo.getCorrectAnswers());
 		gameResult.setNumberOfRoundsPlayed(gameInfo.getRoundNumber());
 		gameResult.setNumberOfTotalRounds(gameInfo.getMaxRounds());
-		gameResult.setTotalPointsScored(gameResult.getRelevanceMultiplier() * gameInfo.getCorrectAnswers());
+		gameResult.setTotalPointsScored(gameInfo.getCorrectAnswers());		
 		
 		this.rankingService.saveRankingByGameResult(gameResult);
 		

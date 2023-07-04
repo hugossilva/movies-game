@@ -122,7 +122,7 @@ public class DirectorGameServiceImpl implements GameService {
 		gameResult.setNumberOfCorrectAnswers(gameSession.getCorrectAnswers());
 		gameResult.setNumberOfRoundsPlayed(gameSession.getRoundNumber());
 		gameResult.setNumberOfTotalRounds(gameSession.getMaxRounds());
-		gameResult.setTotalPointsScored(gameResult.getRelevanceMultiplier() * gameSession.getCorrectAnswers());
+		gameResult.setTotalPointsScored(gameSession.getCorrectAnswers());
 		
 		return gameResult;
 	}

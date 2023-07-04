@@ -33,7 +33,7 @@ public abstract class ResponseGameResult {
 	public Double getTotalPointsScored() {
 		return totalPointsScored;
 	}
-	public void setTotalPointsScored(Double totalPointsScored) {
+	protected void setTotalPointsScored(Double totalPointsScored) {
 		this.totalPointsScored = totalPointsScored;
 	}
 	public Integer getNumberOfTotalRounds() {

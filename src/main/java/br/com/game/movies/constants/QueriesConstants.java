@@ -42,7 +42,7 @@ public final class QueriesConstants {
 			+ " (:user_id, :game_type, :points) ";
 	
 	public static final String QUERY_GENERAL_RANKING = 
-			"SELECT RP.RANKING_POINTS_ID, RP.USER_ID, U.USERNAME, SUM(RP.POINTS) as POINTS "
+			"SELECT ROW_NUMBER() OVER () AS POSITION, RP.USER_ID, U.USERNAME, SUM(RP.POINTS) as POINTS "
 			+ "FROM RANKING_POINTS RP "
 			+ "JOIN USERS U "
 			+ "ON RP.USER_ID = U.USER_ID "
@@ -50,15 +50,37 @@ public final class QueriesConstants {
 			+ "ORDER BY RP.USER_ID "
 			+ "ASC";
 	
-	public static final String QUERY_RANKING_BY_GAME_TYPE = 
-			"SELECT RP.USER_ID, U.USERNAME, SUM(RP.POINTS) "
-			+ "FROM RANKING_POINTS RP "
-			+ "JOIN USERS U "
-			+ "ON RP.USER_ID = U.USER_ID "
-			+ "WHERE RP.GAME_TYPE = :game_type "
-			+ "GROUP BY RP.USER_ID "
-			+ "ORDER BY RP.USER_ID "
-			+ "ASC";
+	public static final String GENERAL_RANKING_VIEW_CARD_GAME =			
+			"SELECT POSITION, "
+			+ "USER_ID, "
+			+ "USERNAME, "
+			+ "POINTS "
+			+ "FROM RANKING_CARD_GAME ";
+	
+	public static final String GENERAL_RANKING_VIEW_DIRECTORS_GAME =			
+			"SELECT POSITION, "
+			+ "USER_ID, "
+			+ "USERNAME, "
+			+ "POINTS "
+			+ "FROM RANKING_DIRECTOR_GAME ";
+	
+	public static final String QUERY_VIEW_CARD_GAME = 
+			"SELECT POSITION, "
+			+ "USER_ID, "
+			+ "USERNAME, "
+			+ "POINTS "
+			+ "FROM RANKING_CARD_GAME "
+			+ "WHERE "
+			+ "USER_ID = :user_id";
+	
+	public static final String QUERY_VIEW_DIRECTORS_GAME = 
+			"SELECT POSITION, "
+			+ "USER_ID, "
+			+ "USERNAME, "
+			+ "POINTS "
+			+ "FROM RANKING_DIRECTOR_GAME "
+			+ "WHERE "
+			+ "USER_ID = :user_id";
 	
 	
 }

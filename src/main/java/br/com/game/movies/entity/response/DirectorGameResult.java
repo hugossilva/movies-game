@@ -7,6 +7,10 @@ public class DirectorGameResult extends ResponseGameResult {
 	private final Double relevanceMultiplier = 1.5;
 	private Integer directorGameRankingPosition;
 	
+	public void setTotalPointsScored(Integer totalPointsScored) {
+		this.setTotalPointsScored(totalPointsScored * this.relevanceMultiplier);
+	}
+	
 	public Integer getDirectorGameRankingPosition() {
 		return directorGameRankingPosition;
 	}

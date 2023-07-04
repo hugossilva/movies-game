@@ -5,7 +5,11 @@ import br.com.game.movies.abstracts.ResponseGameResult;
 public class CardGameResult extends ResponseGameResult {
 	
 	private final Double relevanceMultiplier = 1.0;
-	private Integer cardGameRankingPosition;
+	private Integer cardGameRankingPosition;	
+	
+	public void setTotalPointsScored(Integer totalPointsScored) {
+		this.setTotalPointsScored(this.relevanceMultiplier * totalPointsScored);
+	}
 	
 	public Integer getCardGameRankingPosition() {
 		return cardGameRankingPosition;
